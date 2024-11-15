@@ -44,11 +44,24 @@ describe('getStringInfo for argument Test-String', () => {
         )
     })
 
-    it('sadditionalInfo hould be defined', () => {
+    it('additionalInfo hould be defined', () => {
         const actual = getStringInfo('Test-String')
         expect(actual.additionalInfo).not.toBe(undefined)
         expect(actual.additionalInfo).toBeDefined()
         expect(actual.additionalInfo).not.toBeUndefined()
     })
 
+})
+
+describe.only('test parameterized cases for toUpper functionality', () => {
+    it.each(
+        [
+            {input: 'String', expected: 'STRING'},
+            {input: 'My-string', expected: 'MY-STRING'}
+        ]
+    )('$input upper should be $expected', ({input, expected}) => {
+        const actual = toUpper(input)
+        expect(toUpper(actual)).toBe(expected)
+
+    })
 })
