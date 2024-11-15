@@ -1,8 +1,15 @@
 import { toUpper } from "../app/basics"
 
 describe('basics test suite', () => {
-    test('Should return uppercase', () => {
-        const result = toUpper('lower')
-        expect(result).toBe('LOWER')
+    it('Should return uppercase', () => {
+        // arrange
+        const sut = toUpper
+        const expected = 'LOWER'
+
+        // act
+        const actual = sut('lower')
+
+        // assert
+        expect(actual).toBe(expected)
     })
 })
