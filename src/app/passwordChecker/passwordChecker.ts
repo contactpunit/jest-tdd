@@ -1,3 +1,4 @@
+
 export class PasswordChecker {
     public checkPassword(password: string) {
         if (password.length < 8) {
@@ -5,8 +6,8 @@ export class PasswordChecker {
         }
         if (password === password.toLowerCase()) {
             return false
-        } else {
-            return true
-        }
+        } else if(password === password.toUpperCase()) {
+            return false
+        } else return true
     }
 }

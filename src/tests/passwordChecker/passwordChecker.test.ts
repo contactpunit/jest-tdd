@@ -15,7 +15,7 @@ describe('Password Checker test suite', () => {
 
     it('password with more than 8 chars should be valid', () => {
         const actual = sut.checkPassword('123456789A')
-        expect(actual).toBe(true)
+        expect(actual).toBe(false)
     })
 
     it('password with no upper case letter should be invalid', () => {
