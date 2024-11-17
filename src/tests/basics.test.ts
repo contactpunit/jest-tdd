@@ -37,7 +37,7 @@ describe('basics test suite', () => {
             }).toThrowError('arg cannot be empty')
         })
 
-        xit('should throw error if no arg passed - using try catch function', (done) => {
+        it('should throw error if no arg passed - using try catch function', (done) => {
             try {
                 sut.toUpper('')
                 done()
