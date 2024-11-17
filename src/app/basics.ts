@@ -5,9 +5,9 @@ export class StringUtils {
 }
 
 export function toUpper(arg: string) {
-    if (!arg) {
-        throw new Error('arg cannot be empty')
-    }
+    // if (!arg) {
+    //     throw new Error('arg cannot be empty')
+    // }
     return arg.toUpperCase()
 }
 

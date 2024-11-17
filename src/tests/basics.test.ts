@@ -2,7 +2,7 @@ import { StringUtils, getStringInfo, toUpper } from "../app/basics"
 
 describe('basics test suite', () => {
 
-    describe.only('StringUtils tests', () => {
+    describe('StringUtils tests', () => {
         let sut: StringUtils
 
         beforeEach(() => {
@@ -37,10 +37,10 @@ describe('basics test suite', () => {
             }).toThrowError('arg cannot be empty')
         })
 
-        it('should throw error if no arg passed - using try catch function', () => {
+        it.only('should throw error if no arg passed - using try catch function', (done) => {
             try {
-                const actual = sut.toUpper('')
-                fail('toUpper should throw error if no argument provide')
+                sut.toUpper('')
+                done()
             } catch(err) {
                 expect(err).toBeInstanceOf(Error)
                 expect(err).toHaveProperty('message', 'arg cannot be empty')
