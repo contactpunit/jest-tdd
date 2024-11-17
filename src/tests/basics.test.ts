@@ -37,13 +37,14 @@ describe('basics test suite', () => {
             }).toThrowError('arg cannot be empty')
         })
 
-        it.only('should throw error if no arg passed - using try catch function', (done) => {
+        it('should throw error if no arg passed - using try catch function', (done) => {
             try {
                 sut.toUpper('')
                 done()
             } catch(err) {
                 expect(err).toBeInstanceOf(Error)
                 expect(err).toHaveProperty('message', 'arg cannot be empty')
+                done()
             }
         })
     })
@@ -101,7 +102,7 @@ describe('getStringInfo for argument Test-String', () => {
 
 })
 
-describe.only('test parameterized cases for toUpper functionality', () => {
+describe('test parameterized cases for toUpper functionality', () => {
     it.each(
         [
             {input: 'String', expected: 'STRING'},
