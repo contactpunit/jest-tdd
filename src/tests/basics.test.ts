@@ -1,6 +1,21 @@
-import { getStringInfo, toUpper } from "../app/basics"
+import { StringUtils, getStringInfo, toUpper } from "../app/basics"
 
 describe('basics test suite', () => {
+
+    describe.only('StringUtils tests', () => {
+        let sut: StringUtils
+
+        beforeEach(() => {
+            sut = new StringUtils()
+        })
+
+        it('should return uppercase', () => {
+            const actual = sut.toUpper('test')
+            expect(actual).toBe('TEST')
+        })
+    })
+
+
     it('Should return uppercase', () => {
         // arrange
         const sut = toUpper
