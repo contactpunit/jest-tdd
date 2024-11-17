@@ -13,6 +13,39 @@ describe('basics test suite', () => {
             const actual = sut.toUpper('test')
             expect(actual).toBe('TEST')
         })
+
+        it('should throw error if no arg passed - using toThrow', () => {
+            function getResultOrError() {
+                const actual = sut.toUpper('')
+                return actual
+            }
+            expect(getResultOrError).toThrow()
+        })
+
+        it('should throw error if no arg passed - using toThrowError', () => {
+            function getResultOrError() {
+                const actual = sut.toUpper('')
+                return actual
+            }
+            expect(getResultOrError).toThrowError('arg cannot be empty')
+        })
+
+        it('should throw error if no arg passed - using arrow function', () => {
+            expect(() => {
+                const actual = sut.toUpper('')
+                return actual
+            }).toThrowError('arg cannot be empty')
+        })
+
+        it('should throw error if no arg passed - using try catch function', () => {
+            try {
+                const actual = sut.toUpper('')
+                fail('toUpper should throw error if no argument provide')
+            } catch(err) {
+                expect(err).toBeInstanceOf(Error)
+                expect(err).toHaveProperty('message', 'arg cannot be empty')
+            }
+        })
     })
 
 
