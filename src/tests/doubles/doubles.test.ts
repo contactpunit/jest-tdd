@@ -23,4 +23,27 @@ describe('Doubles test suite', () => {
         expect(toUpperCaseWithCb('', () => {})).toBeUndefined()
     })
 
+    describe('Tracking callback calls', () => {
+        let counter = 0
+        let callArgs = []
+        function callBackMock(arg) {
+            callArgs.push(arg)
+            counter += 1
+        }
+
+        it('toUppercase calls callback for valid argument', () => {
+            const actual = toUpperCaseWithCb('abc', callBackMock)
+            expect(actual).toBe('ABC')
+            expect(callArgs).toContain('called with abc')
+            expect(counter).toBe(1)
+        })
+
+        it('toUppercase calls callback for invalid argument', () => {
+            const actual = toUpperCaseWithCb('', callBackMock)
+            expect(actual).toBeUndefined()
+            expect(callArgs).toContain('Invalid argument')
+            expect(counter).toBe(2)
+        })
+    })
+
 })

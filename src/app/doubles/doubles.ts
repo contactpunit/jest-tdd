@@ -13,7 +13,7 @@ export function calculateComplexity(doubleInfo: DoubleInfo) {
 
 export function toUpperCaseWithCb(arg: string, callBack: Function) {
     if (!arg) {
-        callBack('Invald argument')
+        callBack('Invalid argument')
         return
     }
     callBack(`called with ${arg}`)
