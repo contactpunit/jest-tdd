@@ -18,9 +18,10 @@ export class PasswordChecker {
             reasons.push(PasswordErrors.SHORT)
         }
         if (password === password.toLowerCase()) {
+            reasons.push(PasswordErrors.NO_UPPER_CASE)
 
         } else if(password === password.toUpperCase()) {
-
+            // reasons.push(PasswordErrors.NO_LOWER_CASE)
         }
         return {
             valid: reasons.length ? false : true,
