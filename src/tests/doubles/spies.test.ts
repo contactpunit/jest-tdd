@@ -20,5 +20,12 @@ describe('Test using mock spies',() => {
             sut.toLog('hello today')
             expect(consolelogSpy).toBeCalledWith('hello today')
         })
+
+        test('to spy on private methods of externalApiCall', () => {
+            jest.spyOn(sut as any, 'externalApiCall').mockImplementation(() => {
+                console.log('calling mock implementation')
+            });
+            (sut as any).externalApiCall()
+        })
     })
 })

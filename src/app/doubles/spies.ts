@@ -6,4 +6,8 @@ export class MockSpiesUseCase {
     public toLog(arg: string) {
         console.log(arg)
     }
+
+    private externalApiCall() {
+        console.log('external api called')
+    }
 }
