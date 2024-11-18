@@ -47,12 +47,16 @@ export class PasswordChecker {
         }
     }
 
-    public checkAdminPassword(password: string) {
+    private checkForNumber(password: string) {
         const regex = /\d/
         const result = regex.exec(password)
         if(!result) {
             this.reasons.push(PasswordErrors.NO_NUMBER)
         }
+    }
+
+    public checkAdminPassword(password: string) {
+        this.checkForNumber(password)
         return {
             valid: this.reasons.length ? false : true,
             reasons: this.reasons
