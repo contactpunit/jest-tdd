@@ -31,6 +31,11 @@ describe('Doubles test suite', () => {
             counter += 1
         }
 
+        afterEach(() => {
+            callArgs = []
+            counter = 0
+        })
+
         it('toUppercase calls callback for valid argument', () => {
             const actual = toUpperCaseWithCb('abc', callBackMock)
             expect(actual).toBe('ABC')
@@ -42,7 +47,7 @@ describe('Doubles test suite', () => {
             const actual = toUpperCaseWithCb('', callBackMock)
             expect(actual).toBeUndefined()
             expect(callArgs).toContain('Invalid argument')
-            expect(counter).toBe(2)
+            expect(counter).toBe(1)
         })
     })
 
