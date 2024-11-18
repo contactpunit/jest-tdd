@@ -1,7 +1,7 @@
 export enum PasswordErrors {
     SHORT = 'Password should be minimum 8 characters!',
     NO_UPPER_CASE = 'Password should have atleast 1 upper case character',
-    NO_LOWER_CASE = 'PAssword should have atleast 1 lower case character'
+    NO_LOWER_CASE = 'Password should have atleast 1 lower case character'
 }
 
 export interface CheckResult {
@@ -21,7 +21,7 @@ export class PasswordChecker {
             reasons.push(PasswordErrors.NO_UPPER_CASE)
 
         } else if(password === password.toUpperCase()) {
-            // reasons.push(PasswordErrors.NO_LOWER_CASE)
+            reasons.push(PasswordErrors.NO_LOWER_CASE)
         }
         return {
             valid: reasons.length ? false : true,

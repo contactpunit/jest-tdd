@@ -26,18 +26,18 @@ describe('Password Checker test suite', () => {
         expect(actual.reasons).toContain(PasswordErrors.NO_UPPER_CASE)
     })
 
-    it('password with upper case letter and 8 letters should be valid', () => {
-        const actual = sut.checkPassword('123456789ABV')
-        expect(actual.valid).toBe(true)
-    })
+    // it('password with upper case letter and 8 letters should be valid', () => {
+    //     const actual = sut.checkPassword('123456789ABV')
+    //     expect(actual.valid).toBe(true)
+    // })
 
-    xit('password with no lower case letter should be invalid', () => {
+    it('password with no lower case letter and min 8 characters should be invalid', () => {
         const actual = sut.checkPassword('123456789AA')
-        expect(actual).toBe(false)
+        expect(actual.reasons).toContain(PasswordErrors.NO_LOWER_CASE)
     })
 
     xit('password with lower case letter should be valid', () => {
-        const actual = sut.checkPassword('123456789ABVacg')
+        const actual = sut.checkPassword('123456789acg')
         expect(actual).toBe(true)
     })
 
