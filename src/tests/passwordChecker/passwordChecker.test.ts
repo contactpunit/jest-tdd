@@ -41,9 +41,14 @@ describe('Password Checker test suite', () => {
         expect(actual).not.toContain(PasswordErrors.NO_LOWER_CASE)
     })
 
-    it('password with all matching conditions', () => {
-        const actual = sut.checkPassword('123456789acgWDQ')
-        expect(actual.valid).toBe(true)
+    it('password with no numbers should fail', () => {
+        const actual = sut.checkAdminPassword('dwwwacgWDQttt')
+        expect(actual.valid).toBe(false)
+        expect(actual.reasons).toContain(PasswordErrors.NO_NUMBER)
     })
 
+    it('password with all matching conditions', () => {
+        const actual = sut.checkAdminPassword('123456789acgWDQ')
+        expect(actual.valid).toBe(true)
+    })
 })
