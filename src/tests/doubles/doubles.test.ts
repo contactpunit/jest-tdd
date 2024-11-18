@@ -51,4 +51,26 @@ describe('Doubles test suite', () => {
         })
     })
 
+    describe('Tracking callback calls using JEST mocks', () => {
+        const callbackMock = jest.fn()
+
+        afterEach(()=> {
+            jest.clearAllMocks()
+        })
+
+        it('toUppercase calls callback for valid argument using jest mock', () => {
+            const actual = toUpperCaseWithCb('abc', callbackMock)
+            expect(actual).toBe('ABC')
+            expect(callbackMock).toBeCalledWith('called with abc')
+            expect(callbackMock).toBeCalledTimes(1)
+        })
+
+        it('toUppercase calls callback for invalid argument', () => {
+            const actual = toUpperCaseWithCb('', callbackMock)
+            expect(actual).toBeUndefined()
+            expect(callbackMock).toBeCalledWith('Invalid argument')
+            expect(callbackMock).toBeCalledTimes(1)
+        })
+    })
+
 })
