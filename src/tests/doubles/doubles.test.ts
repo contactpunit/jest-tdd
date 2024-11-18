@@ -1,4 +1,4 @@
-import { calculateComplexity } from "../../app/doubles/doubles"
+import { calculateComplexity, toUpperCaseWithCb } from "../../app/doubles/doubles"
 
 describe('Doubles test suite', () => {
 
@@ -11,9 +11,16 @@ describe('Doubles test suite', () => {
                 place: 'india'
             }
         }
-
         const actual = calculateComplexity(someInfo as any)
-
         expect(actual).toBe(15)
     })
+
+    it('toUppercase calls callback for valid argument', () => {
+        expect(toUpperCaseWithCb('abc', () => {})).toBe('ABC')
+    })
+
+    it('toUppercase calls callback for invalid argument', () => {
+        expect(toUpperCaseWithCb('', () => {})).toBeUndefined()
+    })
+
 })
