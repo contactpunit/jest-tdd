@@ -1,4 +1,5 @@
 jest.mock('../../app/doubles/doubles', () => ({
+    ...jest.requireActual('../../app/doubles/doubles'),
     toUpper: () => {return 'ABC'}
 }))
 
