@@ -1,4 +1,4 @@
-import type { Config, Config } from '@jest/types'
+import type { Config } from '@jest/types'
 
 const baseDir = '<rootDir>/src/app'
 
