@@ -4,7 +4,8 @@
   "description": "mocking apis",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "ts-node src/app/Launcher.ts"
   },
   "author": "",
   "license": "ISC",
