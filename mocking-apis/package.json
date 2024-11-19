@@ -4,7 +4,7 @@
   "description": "mocking apis",
   "main": "index.js",
   "scripts": {
-    "test": "npm test",
+    "test": "jest",
     "start": "ts-node src/app/Launcher.ts"
   },
   "author": "",
