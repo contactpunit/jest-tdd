@@ -15,12 +15,24 @@ describe('database test suite', () => {
         jest.spyOn(IdGenerator, 'generateRandomId' ).mockReturnValue(fakeId)
     })
 
-    test('should return random d after insert operation',  async() => {
+    test('should return random id after insert operation',  async() => {
         const actual = await sut.insert({
             id: '3333',
             name: 'punit'
         })
 
         expect(actual).toBe(fakeId)
+    })
+
+    test('should get element on 1st insert',  async() => {
+        const insertObj = {
+            id: '3333',
+            name: 'punit'
+        }
+        const id = await sut.insert(insertObj)
+
+        const actual = await sut.getBy('id', id)
+
+        expect(actual).toBe(insertObj)
     })
 })
