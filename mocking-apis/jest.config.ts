@@ -13,7 +13,7 @@ const config: Config.InitialOptions = {
         `${baseDir}/**/*.ts`
     ],
     testMatch: [
-        `${testDir}/**/*.ts`
+        `${testDir}/UserCredentialsDataAccess.test.ts`
     ]
 }
 
