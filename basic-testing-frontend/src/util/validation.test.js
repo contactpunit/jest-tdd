@@ -20,6 +20,19 @@ describe('validation test suite', () => {
             expect(resultFn).toThrow(/Invalid input - must not be empty./)
         })
 
+        it('should throw error if anything apart from string provided', () => {
+            const input1 = 7
+            const input2 = {}
+            const input3 = true
+            const resultFn1 = () => {validateStringNotEmpty(input1)}
+            const resultFn2 = () => {validateStringNotEmpty(input2)}
+            const resultFn3 = () => {validateStringNotEmpty(input3)}
+
+            expect(resultFn1).toThrow()
+            expect(resultFn2).toThrow()
+            expect(resultFn3).toThrow(/value.trim is not a function/)
+        })
+
         it('should throw should do nothing if valid string passed', () => {
             const input = 'abcd'
             expect(validateStringNotEmpty(input)).toBeUndefined()
@@ -31,6 +44,12 @@ describe('validation test suite', () => {
             const input = 'abcd'
             const resultFn = () => {validateNumber(input)}
             expect(resultFn).toThrow(/Invalid number input./)
+        })
+
+        it('should throw error if 1 passed as string arg', () => {
+            const input = '1'
+            const resultFn = () => {validateNumber(input)}
+            expect(resultFn).toThrow()
         })
 
         it('should not throw exception if number passed as arg', () => {
