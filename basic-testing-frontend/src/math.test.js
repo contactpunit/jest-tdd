@@ -46,5 +46,5 @@ test('should throw an error if multiple arguments passed instead of array', () =
     const resultFn = () => {
         add(1, 2, 3)
     }
-    expect(resultFn).toThrow()
+    expect(resultFn).toThrow(/is not iterable/)
 })
