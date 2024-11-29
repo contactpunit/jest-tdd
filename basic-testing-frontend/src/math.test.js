@@ -49,4 +49,10 @@ describe('cleanNumbers()', () => {
         const cleanFn = () => cleanNumbers(mixedArray)
         expect(cleanFn).toThrowError()
     })
+
+    test('should return array of numbers when numbers as strings are passed', () => {
+        const numArray = ['1', '4', '7']
+        const expected = [1, 4, 7]
+        expect(cleanNumbers(numArray)).toEqual(expected)
+    })
 })
