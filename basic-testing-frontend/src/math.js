@@ -21,7 +21,7 @@ export function calculateResult(numberInputs) {
   return result
 }
 
-function cleanNumbers(numberInputs) {
+export function cleanNumbers(numberInputs) {
   const numbers = []
   for (const numberInput of numberInputs) {
     validateStringNotEmpty(numberInput);
