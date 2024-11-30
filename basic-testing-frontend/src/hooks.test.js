@@ -1,8 +1,13 @@
-import { expect, it, describe } from "vitest";
+import { expect, it, describe, beforeEach } from "vitest";
 import { User } from "./hooks";
 
 describe('class User', () => {
-    const email = 'abc@test.com'
+
+    let email
+    beforeEach(() => {
+        email = 'abc@test.com'
+    })
+    
 
     it('should create a user object', () => {
         const user = new User(email)
