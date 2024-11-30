@@ -1,7 +1,7 @@
 import { expect, it, describe, beforeEach } from "vitest";
 import { User } from "./hooks";
 
-describe('class User', () => {
+describe.concurrent('class User', () => {
 
     let email
     beforeEach(() => {
