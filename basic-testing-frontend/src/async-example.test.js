@@ -6,9 +6,12 @@ describe('generateToken()', () => {
     it('should generate token', (done) => {
         const emailAddress = 'abc@test.com'
         generateToken(emailAddress, (err, token) => {
-            // expect(token).toBeDefined()
-            expect(token).toBe(4);
-            done();
+            try {
+                // expect(token).toBeDefined()
+                expect(token).toBe(4);
+            } catch(err) {
+                done(err);
+            }
         })
     })
 })
