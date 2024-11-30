@@ -7,8 +7,9 @@ describe('generateToken()', () => {
         const emailAddress = 'abc@test.com'
         generateToken(emailAddress, (err, token) => {
             try {
-                // expect(token).toBeDefined()
-                expect(token).toBe(4);
+                expect(token).toBeDefined()
+                // expect(token).toBe(4);
+                done()
             } catch(err) {
                 done(err);
             }
