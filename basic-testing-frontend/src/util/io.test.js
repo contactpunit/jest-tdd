@@ -21,7 +21,7 @@ describe('writeData()', () => {
         
         writeData(testData, file)
         expect(fs.writeFile).toBeCalled()
-        // return expect(writeData(testData, file)).resolves.toBeUndefined()
+        return expect(writeData(testData, file)).resolves.toBeUndefined()
     })
 
     it('should write data to file', () => {
