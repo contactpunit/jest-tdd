@@ -16,8 +16,17 @@ describe('validateNotEmpty', () => {
             validateNotEmpty(inputText)
         }).toThrow()
     })
+
     test('should throw error for empty text with regex match for error', () => {
         const inputText = ''
+        const errMsg = 'cannot be empty input'
+        expect(() => {
+            validateNotEmpty(inputText, errMsg)
+        }).toThrowError(/cannot be empty input/)
+    })
+
+    test('should throw error for empty spaced text', () => {
+        const inputText = '   '
         const errMsg = 'cannot be empty input'
         expect(() => {
             validateNotEmpty(inputText, errMsg)
