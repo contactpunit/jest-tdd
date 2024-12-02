@@ -1,5 +1,6 @@
 import { it, expect, describe, vi} from 'vitest'
 import { sendDataRequest } from './http'
+import { HttpError } from './errors'
 
 const fetchFn = vi.fn((url, options) => {
     return new Promise((resolve, reject) => {
@@ -49,5 +50,25 @@ describe('sendDataRequest()', ()=> {
             errMessage = err
         }
         expect(errMessage).not.toBe('body either not available or not a JSON')
+    })
+
+    it('should throw an HttpError response incase of not OK', () => {
+        const data = {'key': 'test'}
+        fetchFn.mockImplementationOnce((url, options) => {
+            return new Promise((resolve, reject) => {
+                const result = {
+                    ok: false,
+                    json() {
+                        return new Promise((resolve, reject) => {
+                            const respData = {'name': 'Punit'}
+                            resolve(respData)
+                        })
+                    }
+                }
+                resolve(result)
+            })
+        })
+
+        expect(sendDataRequest(data)).rejects.toBeInstanceOf(HttpError)
     })
 })
