@@ -49,8 +49,8 @@ describe.only('RegisterHandler test suite', () => {
 
         await sut.handleRequest()
         expect(responseMock.statusCode).toBe(HTTP_CODES.CREATED)
-        expect(responseMock.writeHead).toBeCalledWith(HTTP_CODES.CREATED, { 'Content-Type': 'application/json' })
-        expect(responseMock.write).toBeCalledWith(JSON.stringify({userId: someid}))
+        expect(responseMock.writeHead).toHaveBeenCalledWith(HTTP_CODES.CREATED, { 'Content-Type': 'application/json' })
+        expect(responseMock.write).toHaveBeenCalledWith(JSON.stringify({userId: someid}))
     })
 
     it('should fail if no valid username and password provided',async () => {
@@ -58,8 +58,8 @@ describe.only('RegisterHandler test suite', () => {
         getRequestBodyMock.mockResolvedValueOnce({})
         await sut.handleRequest()
         expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
-        expect(responseMock.writeHead).toBeCalledWith(HTTP_CODES.BAD_REQUEST, { 'Content-Type': 'application/json' })
-        expect(responseMock.write).toBeCalledWith(JSON.stringify('userName and password required'))
+        expect(responseMock.writeHead).toHaveBeenCalledWith(HTTP_CODES.BAD_REQUEST, { 'Content-Type': 'application/json' })
+        expect(responseMock.write).toHaveBeenCalledWith(JSON.stringify('userName and password required'))
     })
 
     it('should do nothing with unsupported HTTP methods', async() => {
