@@ -4,6 +4,7 @@ import { ReservationsDataAccess } from "../../../app/data/ReservationsDataAccess
 import { Authorizer } from "../../../app/auth/Authorizer";
 import { HTTP_CODES, HTTP_METHODS } from "../../../app/model/ServerModel";
 import { Reservation } from "../../../app/model/ReservationModel";
+import { mock } from "node:test";
 
 const getRequestBodyMock = jest.fn()
 
@@ -33,7 +34,7 @@ describe('ReservationHandlers test suite', () => {
     }
 
     const reservation1: Reservation = {
-        id: '',
+        id: '1111',
         room: 'someroom',
         user: 'someuser',
         startDate: new Date().toDateString(),
@@ -103,6 +104,37 @@ describe('ReservationHandlers test suite', () => {
 
             expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
             expect(responseMock.write).toHaveBeenCalledWith(JSON.stringify('Incomplete reservation!'))
+        })
+    })
+
+    describe('HTTP GET tests', () => {
+        beforeEach(() => {
+            request.headers.authorization = '12345'
+            authorizerMock.validateToken.mockResolvedValueOnce(true)
+            request.method = HTTP_METHODS.GET
+        })
+
+        afterEach(()=> {
+            jest.clearAllMocks()
+        })
+
+        it('should get all reservations when all is passed', async () => {
+            request.url = '/reservations/all'
+            getAllReservationsMock.mockResolvedValueOnce([reservation1])
+
+            await sut.handleRequest()
+            expect(responseMock.writeHead).toHaveBeenCalledWith(HTTP_CODES.OK, { 'Content-Type': 'application/json' })
+            expect(responseMock.write).toHaveBeenCalledWith(JSON.stringify([reservation1]))
+        })
+
+        it('should get all reservations when no id passed', async () => {
+            request.url = '/reservations/'
+
+            await sut.handleRequest()
+            expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
+            expect(responseMock.write).toHaveBeenCalledWith(JSON.stringify(
+                'Please provide an ID!'
+            ))
         })
     })
 })
