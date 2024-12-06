@@ -1,8 +1,4 @@
-// import { Authorizer } from "../../../app/auth/Authorizer"
-// import { ReservationsDataAccess } from "../../../app/data/ReservationsDataAccess"
-// import { LoginHandler } from "../../../app/handlers/LoginHandler"
-// import { RegisterHandler } from "../../../app/handlers/RegisterHandler"
-// import { ReservationsHandler } from "../../../app/handlers/ReservationsHandler"
+
 import { Authorizer } from "../../../app/auth/Authorizer"
 import { ReservationsDataAccess } from "../../../app/data/ReservationsDataAccess"
 import { Server } from "../../../app/server/Server"
@@ -49,5 +45,7 @@ describe('Server test suite', () => {
     })
     it('should start the server', async () => {
         await sut.startServer()
+        expect(ServerMock.listen).toHaveBeenCalledWith(8080)
+        expect(responseMock.end).toHaveBeenCalled()
     })
 })
