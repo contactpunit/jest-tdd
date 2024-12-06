@@ -34,18 +34,18 @@ describe('ReservationHandlers test suite', () => {
     }
 
     const reservation1: Reservation = {
-        id: '1111',
+        id: '2222',
         room: 'someroom',
         user: 'someuser',
         startDate: new Date().toDateString(),
         endDate: new Date().toDateString()
     }
 
-    const createReservationMock = jest.fn()
-    const getAllReservationsMock = jest.fn()
-    const getReservationMock = jest.fn()
-    const updateReservationMock = jest.fn()
-    const deleteReservationMock = jest.fn()
+    const createReservationMock = jest.fn();
+    const getAllReservationsMock = jest.fn();
+    const getReservationMock = jest.fn();
+    const updateReservationMock = jest.fn();
+    const deleteReservationMock = jest.fn();
 
     const reservationsDataAccessMock = {
         createReservation: () => createReservationMock(),
@@ -99,7 +99,7 @@ describe('ReservationHandlers test suite', () => {
         })
 
         it('should call handlePost and fail for invalid reservation with BAD_REQUEST', async () => {
-            getRequestBodyMock.mockResolvedValue({})
+            getRequestBodyMock.mockResolvedValueOnce({})
             await sut.handleRequest()
 
             expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
@@ -136,5 +136,65 @@ describe('ReservationHandlers test suite', () => {
                 'Please provide an ID!'
             ))
         })
+    })
+
+    describe('HTTP PUT request tests', () => {
+
+        beforeEach(() => {
+            request.headers.authorization = '12345'
+            request.method = HTTP_METHODS.PUT
+
+            sut = new ReservationsHandler(
+                request as any as IncomingMessage,
+                responseMock as any as ServerResponse, 
+                authorizerMock as any as Authorizer, 
+                reservationsDataAccessMock as any as ReservationsDataAccess
+            )
+            request.headers.authorization = '1234567'
+            authorizerMock.validateToken.mockResolvedValueOnce(true)
+
+        })
+
+        it('should fail with not found when no reservation is got', async () => {
+            const someid = '2222'
+            request.url = `/reservations/${someid}`
+
+            getReservationMock.mockResolvedValueOnce(undefined)
+
+            await sut.handleRequest()
+
+            expect(responseMock.statusCode).toBe(HTTP_CODES.NOT_fOUND)
+            expect(responseMock.write).toHaveBeenCalledWith(JSON.stringify(`Reservation with id ${someid} not found`))
+        })
+
+        it('should fail when no id is passed', async () => {
+            request.url = '/reservations/'
+            await sut.handleRequest()
+
+            expect(responseMock.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
+            expect(responseMock.write).toHaveBeenCalledWith(JSON.stringify(
+                'Please provide an ID!'
+            ))
+        })
+
+        it('should update the existing reservation', async () => {
+            const someid = '1234'
+            request.url = '/reservations/1234'
+            const reservation: Reservation = {
+                id: '1234',
+                room: 'abcd',
+                user: 'punit',
+                startDate: '6dec',
+                endDate: '7dec'
+            }
+
+            getReservationMock.mockResolvedValueOnce(reservation)
+            getRequestBodyMock.mockResolvedValueOnce({startDate: '7Dec'})
+
+            await sut.handleRequest()
+            expect(updateReservationMock).toHaveBeenCalledTimes(1)
+        })
+
+
     })
 })
