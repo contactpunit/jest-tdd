@@ -1,6 +1,8 @@
 import { Authorizer } from "../../../app/auth/Authorizer"
 import { ReservationsDataAccess } from "../../../app/data/ReservationsDataAccess"
+import { LoginHandler } from "../../../app/handlers/LoginHandler"
 import { RegisterHandler } from "../../../app/handlers/RegisterHandler"
+import { ReservationsHandler } from "../../../app/handlers/ReservationsHandler"
 import { Server } from "../../../app/server/Server"
 
 jest.mock('../../../app/auth/Authorizer')
@@ -59,6 +61,38 @@ describe('Server test suite', () => {
         await sut.startServer()
         expect(handleRequestSpy).toHaveBeenCalledTimes(1)
         expect(RegisterHandler).toHaveBeenCalledWith(requestMock, responseMock, expect.any(Authorizer))
+    })
+
+    it('should make login handler request with correct args', async () => {
+        requestMock.url = 'localhost:8080/login'
+        const loginSpy = jest.spyOn(LoginHandler.prototype, 'handleRequest')
+
+        await sut.startServer()
+        expect(loginSpy).toHaveBeenCalledTimes(1)
+        expect(LoginHandler).toHaveBeenCalledWith(requestMock, responseMock, expect.any(Authorizer))
+    })
+
+    it('should make reservation call with correct args', async() => {
+        requestMock.url = 'localhost:8080/reservation'
+        const reservationSpy = jest.spyOn(ReservationsHandler.prototype, 'handleRequest')
+
+        await sut.startServer()
+        expect(reservationSpy).toHaveBeenCalledTimes(1)
+        expect(ReservationsHandler).toHaveBeenCalledWith(
+            requestMock,
+            responseMock,
+            expect.any(Authorizer),
+            expect.any(ReservationsDataAccess)
+        )
+    })
+
+    it('for invalid route authoriation not called', async () => {
+        requestMock.url = 'localhost:8080/test'
+        const validateSpy = jest.spyOn(Authorizer.prototype, 'validateToken')
+
+        await sut.startServer()
+        expect(validateSpy).toHaveBeenCalledTimes(0)
+        expect(validateSpy).not.toHaveBeenCalled()
     })
 
 })
