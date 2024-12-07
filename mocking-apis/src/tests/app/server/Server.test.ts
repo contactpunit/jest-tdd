@@ -3,6 +3,7 @@ import { ReservationsDataAccess } from "../../../app/data/ReservationsDataAccess
 import { LoginHandler } from "../../../app/handlers/LoginHandler"
 import { RegisterHandler } from "../../../app/handlers/RegisterHandler"
 import { ReservationsHandler } from "../../../app/handlers/ReservationsHandler"
+import { HTTP_CODES } from "../../../app/model/ServerModel"
 import { Server } from "../../../app/server/Server"
 
 jest.mock('../../../app/auth/Authorizer')
@@ -95,4 +96,16 @@ describe('Server test suite', () => {
         expect(validateSpy).not.toHaveBeenCalled()
     })
 
+    it('should fail while doing seome invalid reservation and error is handled', async () => {
+        requestMock.url = 'localhost:8080/reservation'
+        const reservationSpy = jest.spyOn(ReservationsHandler.prototype, 'handleRequest')
+        reservationSpy.mockRejectedValueOnce(
+            new Error('invalid reservation!')
+        )
+
+        await sut.startServer()
+        expect(responseMock.writeHead).toHaveBeenCalledWith(
+            HTTP_CODES.INTERNAL_SERVER_ERROR, 
+            JSON.stringify('Internal server error: invalid reservation!'))
+    })
 })
