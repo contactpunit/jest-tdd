@@ -57,7 +57,7 @@ export class Server {
         if (this.server) {
             console.log('closing server');
             return new Promise<void>((resolve, reject) => {
-                this.server!.close((err) => {
+                this.server.close((err) => {
                     if (err) {
                         reject(err);
                     } else {

@@ -26,7 +26,7 @@ const responseMock = {
 
 const ServerMock = {
     listen: jest.fn(),
-    close: jest.fn()
+    close: jest.fn((cb) => cb())
 }
 
 jest.mock('http', () => ({
@@ -107,5 +107,14 @@ describe('Server test suite', () => {
         expect(responseMock.writeHead).toHaveBeenCalledWith(
             HTTP_CODES.INTERNAL_SERVER_ERROR, 
             JSON.stringify('Internal server error: invalid reservation!'))
+    })
+
+    it('will close the http server', async () => {
+        await sut.startServer()
+        await sut.stopServer()
+        
+        console.log('stopped server');
+        
+        expect(ServerMock.close).toHaveBeenCalledTimes(1)
     })
 })
