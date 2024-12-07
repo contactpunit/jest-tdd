@@ -1,8 +1,8 @@
 import type { Config } from '@jest/types'
 
-const baseDir = '<rootDir>/src/app/auth'
+const baseDir = '<rootDir>/src/app/data'
 
-const testDir = '<rootDir>/src/tests/app/auth'
+const testDir = '<rootDir>/src/tests/app/data'
 
 const config: Config.InitialOptions = {
     preset: 'ts-jest',
