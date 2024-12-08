@@ -47,4 +47,33 @@ describe('RegisterRequest test suite', () => {
         expect(responseTestWrapper.body).toEqual({userId: '12345'})
         
     })
+
+    it('should raise a bad request for wrng body', async () => {
+        requestTestWrapper.method = HTTP_METHODS.POST
+        requestTestWrapper.url = 'localhost:8080/register'
+        requestTestWrapper.body = {
+            userName: 'someusername'
+        }
+
+        const server = await new Server()
+        await server.startServer()
+        await new Promise(process.nextTick)
+
+        expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
+        expect(responseTestWrapper.body).toEqual('userName and password required')
+    })
+
+    it('should do nothing for unsupported method', async () => {
+        requestTestWrapper.method = HTTP_METHODS.PUT
+        requestTestWrapper.url = 'localhost:8080/register'
+        requestTestWrapper.body = {
+            userName: 'someusername'
+        }
+
+        const server = await new Server()
+        await server.startServer()
+        await new Promise(process.nextTick)
+
+        expect(responseTestWrapper.statusCode).toBeUndefined()
+    })
 })

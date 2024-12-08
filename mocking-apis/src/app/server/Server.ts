@@ -20,7 +20,7 @@ export class Server {
             res.end();
         });
 
-        this.server!.listen(8080, );
+        this.server!.listen(8080);
         console.log('server started')
     }
 
