@@ -35,6 +35,7 @@ jest.mock('../../../../app/data/DataBase')
 
 const getBySpy = jest.spyOn(DataBase.prototype, 'getBy')
 const insertSpy = jest.spyOn(DataBase.prototype, 'insert')
+const getallElementsSpy = jest.spyOn(DataBase.prototype, 'getAllElements')
 const requestBodySpy = jest.spyOn(Utils, 'getRequestBody')
 
 describe.only('ReservationHandler test suite', () => {
@@ -48,8 +49,6 @@ describe.only('ReservationHandler test suite', () => {
         it('should be unauthorized if authorization hader not set', async () => {
             requestTestWrapper.url = 'localhost:8080/reservation'
             requestTestWrapper.method = HTTP_METHODS.POST
-            // requestTestWrapper.headers['authorization'] = '1234'
-            // getBySpy.mockResolvedValueOnce(someSessionToken)
     
             const server = await new Server()
             await server.startServer()
@@ -87,6 +86,38 @@ describe.only('ReservationHandler test suite', () => {
             await new Promise(process.nextTick)
             expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.CREATED)
             expect(responseTestWrapper.body).toEqual({reservationId: '55'})
+        })
+    })
+
+    describe('GET test suite', () => {
+        it('should get all reservations', async() => {
+            requestTestWrapper.url = 'localhost:8080/reservation/all'
+            requestTestWrapper.method = HTTP_METHODS.GET
+            requestTestWrapper.headers['authorization'] = '1234'
+            getBySpy.mockResolvedValueOnce(someSessionToken)
+            getallElementsSpy.mockResolvedValueOnce([someReservation])
+
+            const server = await new Server()
+            await server.startServer()
+            await new Promise(process.nextTick)
+
+            expect(responseTestWrapper.body).toEqual([someReservation])
+            expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.OK)
+        })
+
+        it('should one specific reservation', async() => {
+            requestTestWrapper.url = 'localhost:8080/reservation/111'
+            requestTestWrapper.method = HTTP_METHODS.GET
+            requestTestWrapper.headers['authorization'] = '1234'
+            getBySpy.mockResolvedValueOnce(someSessionToken)
+            getBySpy.mockResolvedValueOnce(someReservation)
+
+            const server = await new Server()
+            await server.startServer()
+            await new Promise(process.nextTick)
+
+            expect(responseTestWrapper.body).toEqual(someReservation)
+            expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.OK)
         })
     })
 })
