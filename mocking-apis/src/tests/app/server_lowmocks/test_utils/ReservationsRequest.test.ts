@@ -35,6 +35,7 @@ jest.mock('../../../../app/data/DataBase')
 
 const getBySpy = jest.spyOn(DataBase.prototype, 'getBy')
 const insertSpy = jest.spyOn(DataBase.prototype, 'insert')
+const updateSpy = jest.spyOn(DataBase.prototype, 'update')
 const getallElementsSpy = jest.spyOn(DataBase.prototype, 'getAllElements')
 const requestBodySpy = jest.spyOn(Utils, 'getRequestBody')
 
@@ -118,6 +119,32 @@ describe.only('ReservationHandler test suite', () => {
 
             expect(responseTestWrapper.body).toEqual(someReservation)
             expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.OK)
+        })
+    })
+
+    describe('PUT testcases', () => {
+        it('should update a reservation', async () => {
+            const id = 111
+            requestTestWrapper.url = `localhost:8080/reservation/${id}`
+            requestTestWrapper.method = HTTP_METHODS.PUT
+            requestTestWrapper.headers['authorization'] = '1234'
+            getBySpy.mockResolvedValueOnce(someSessionToken)
+            getBySpy.mockResolvedValueOnce(someReservation)
+            updateSpy.mockResolvedValue(undefined);
+
+            const changeReserv = {
+                user: 'sometheruser',
+                startDate: 'someOtherStartDate'
+            }
+
+            requestTestWrapper.body = changeReserv
+
+            const server = await new Server()
+            await server.startServer()
+            await new Promise(process.nextTick)
+
+            expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.OK)
+            expect(responseTestWrapper.body).toBe(`Updated ${Object.keys(changeReserv)} of reservation ${id}`)
         })
     })
 })
