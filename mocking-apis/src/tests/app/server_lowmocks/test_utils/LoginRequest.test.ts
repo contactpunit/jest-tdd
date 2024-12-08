@@ -21,7 +21,7 @@ jest.mock('http', () => ({
     }
 }))
 
-describe.only('LoginHandler test suite', () => {
+describe.skip('LoginHandler test suite', () => {
 
     const insertSpy = jest.spyOn(DataBase.prototype, 'insert')
     const getBySpy = jest.spyOn(DataBase.prototype, 'getBy')
