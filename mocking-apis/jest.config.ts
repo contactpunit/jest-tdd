@@ -2,7 +2,7 @@ import type { Config } from '@jest/types'
 
 const baseDir = '<rootDir>/src/app/data'
 
-const testDir = '<rootDir>/src/tests/app/data'
+const testDir = '<rootDir>/src/tests/app/server_lowmocks'
 
 const config: Config.InitialOptions = {
     preset: 'ts-jest',
@@ -13,7 +13,7 @@ const config: Config.InitialOptions = {
         `${baseDir}/**/*.ts`
     ],
     testMatch: [
-        `${testDir}/**/*.ts`
+        `${testDir}/**/*.test.ts`
     ]
 }
 
