@@ -70,7 +70,6 @@ export class ReservationsHandler {
             this.response.write(JSON.stringify('Incomplete reservation!'));
             return;
         }
-
         const reservationId = await this.reservationsDataAccess.createReservation(requestBody);
         this.response.statusCode = HTTP_CODES.CREATED;
         this.response.writeHead(HTTP_CODES.CREATED, { 'Content-Type': 'application/json' });

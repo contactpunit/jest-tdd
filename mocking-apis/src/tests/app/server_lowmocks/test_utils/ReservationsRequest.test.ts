@@ -21,6 +21,7 @@ jest.mock('http', () => ({
 }))
 
 const someSessionToken = {valid: true}
+const reservationId = '55'
 
 const someReservation = {
     id: '',
@@ -31,7 +32,9 @@ const someReservation = {
 }
 
 jest.mock('../../../../app/data/DataBase')
+
 const getBySpy = jest.spyOn(DataBase.prototype, 'getBy')
+const insertSpy = jest.spyOn(DataBase.prototype, 'insert')
 const requestBodySpy = jest.spyOn(Utils, 'getRequestBody')
 
 describe.only('ReservationHandler test suite', () => {
@@ -41,32 +44,49 @@ describe.only('ReservationHandler test suite', () => {
         responseTestWrapper.clearAllFields()
     })
 
-    it('should be unauthorized if authorization hader not set', async () => {
-        requestTestWrapper.url = 'localhost:8080/reservation'
-        requestTestWrapper.method = HTTP_METHODS.POST
-        // requestTestWrapper.headers['authorization'] = '1234'
-        // getBySpy.mockResolvedValueOnce(someSessionToken)
-
-        const server = await new Server()
-        await server.startServer()
-        await new Promise(process.nextTick)
-
-        expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.UNAUTHORIZED)
-        expect(responseTestWrapper.body).toBe('Unauthorized operation!')
-    })
-
-
-    it('should create a reservation for user', async () => {
-        requestTestWrapper.url = 'localhost:8080/reservation'
-        requestTestWrapper.method = HTTP_METHODS.POST
-        requestTestWrapper.headers['authorization'] = '1234'
-        getBySpy.mockResolvedValueOnce(someSessionToken)
-        requestBodySpy.mockResolvedValueOnce({})
-        
-        const server = await new Server()
-        await server.startServer()
-        await new Promise(process.nextTick)
-        expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
-        expect(responseTestWrapper.body).toBe('Incomplete reservation!')
+    describe('POST test suite', () => {
+        it('should be unauthorized if authorization hader not set', async () => {
+            requestTestWrapper.url = 'localhost:8080/reservation'
+            requestTestWrapper.method = HTTP_METHODS.POST
+            // requestTestWrapper.headers['authorization'] = '1234'
+            // getBySpy.mockResolvedValueOnce(someSessionToken)
+    
+            const server = await new Server()
+            await server.startServer()
+            await new Promise(process.nextTick)
+    
+            expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.UNAUTHORIZED)
+            expect(responseTestWrapper.body).toBe('Unauthorized operation!')
+        })
+    
+    
+        it('should create a reservation for user', async () => {
+            requestTestWrapper.url = 'localhost:8080/reservation'
+            requestTestWrapper.method = HTTP_METHODS.POST
+            requestTestWrapper.headers['authorization'] = '1234'
+            getBySpy.mockResolvedValueOnce(someSessionToken)
+            requestBodySpy.mockResolvedValueOnce({})
+            
+            const server = await new Server()
+            await server.startServer()
+            await new Promise(process.nextTick)
+            expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.BAD_REQUEST)
+            expect(responseTestWrapper.body).toBe('Incomplete reservation!')
+        })
+    
+        it('should create a new reservation', async () => {
+            requestTestWrapper.url = 'localhost:8080/reservation'
+            requestTestWrapper.method = HTTP_METHODS.POST
+            requestTestWrapper.headers['authorization'] = '1234'
+            getBySpy.mockResolvedValueOnce(someSessionToken)
+            requestBodySpy.mockResolvedValueOnce(someReservation)
+            insertSpy.mockResolvedValueOnce(reservationId)
+    
+            const server = await new Server()
+            await server.startServer()
+            await new Promise(process.nextTick)
+            expect(responseTestWrapper.statusCode).toBe(HTTP_CODES.CREATED)
+            expect(responseTestWrapper.body).toEqual({reservationId: '55'})
+        })
     })
 })
