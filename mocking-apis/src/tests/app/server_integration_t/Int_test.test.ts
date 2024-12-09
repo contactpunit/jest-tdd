@@ -22,11 +22,21 @@ describe('Integration test for Server GET POST calls', () => {
     }
 
     let reqToken
+    let reservationId
+    let secondReservationId
 
-    const someReservation: Reservation = {
+    const firstReservation: Reservation = {
         id: '',
         room: '123',
         user: 'punit',
+        startDate: new Date().toDateString(),
+        endDate: new Date().toDateString()
+    }
+
+    const secondReservation: Reservation = {
+        id: '',
+        room: '567',
+        user: 'nidhi',
         startDate: new Date().toDateString(),
         endDate: new Date().toDateString()
     }
@@ -69,9 +79,74 @@ describe('Integration test for Server GET POST calls', () => {
                 authorization: reqToken
             }
 
-        }, someReservation)
+        }, firstReservation)
 
         expect(result.statusCode).toBe(HTTP_CODES.CREATED)
         expect(result.body.reservationId).toBeDefined
+        reservationId = result.body.reservationId
+        console.log(reservationId)
+
+        const result2 = await makeAwesomeRequest({
+            host: 'localhost',
+            port: 8080,
+            method: HTTP_METHODS.POST,
+            path: '/reservation',
+            headers: {
+                authorization: reqToken
+            }
+
+        }, secondReservation)
+
+        secondReservationId = result2.body.reservationId
+        console.log(secondReservationId)
+    })
+
+    it('should get a reservation base on reservation ID for the user', async () => {
+        const result = await makeAwesomeRequest({
+            host: 'localhost',
+            port: 8080,
+            method: HTTP_METHODS.GET,
+            path: `/reservation/${reservationId}`,
+            headers: {
+                authorization: reqToken
+            }
+
+        }, firstReservation)
+
+        expect(result.statusCode).toBe(HTTP_CODES.OK)
+        firstReservation.id = result.body.id
+        expect(result.body).toEqual(firstReservation)
+
+        const secondResult = await makeAwesomeRequest({
+            host: 'localhost',
+            port: 8080,
+            method: HTTP_METHODS.GET,
+            path: `/reservation/${secondReservationId}`,
+            headers: {
+                authorization: reqToken
+            }
+
+        }, secondReservation)
+
+        expect(secondResult.statusCode).toBe(HTTP_CODES.OK)
+        secondReservation.id = secondResult.body.id
+        expect(secondResult.body).toEqual(secondReservation)
+    })
+
+    it('should get all reservations for the user', async () => {
+        const result = await makeAwesomeRequest({
+            host: 'localhost',
+            port: 8080,
+            method: HTTP_METHODS.GET,
+            path: '/reservation/all',
+            headers: {
+                authorization: reqToken
+            }
+
+        }, firstReservation)
+
+        expect(result.statusCode).toBe(HTTP_CODES.OK)
+        console.log(result.body)
+        expect(result.body).toEqual([firstReservation, secondReservation])
     })
 })
