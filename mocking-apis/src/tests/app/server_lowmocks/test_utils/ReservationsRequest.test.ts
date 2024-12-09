@@ -2,6 +2,7 @@ import { DataBase } from "../../../../app/data/DataBase"
 import { HTTP_CODES, HTTP_METHODS } from "../../../../app/model/ServerModel"
 import { Server } from "../../../../app/server/Server"
 import * as Utils from "../../../../app/utils/Utils"
+import { makeAwesomeRequest } from "../../server_integration_t/http_client"
 import { RequestTestWrapper } from "./RequestTestWrapper"
 import { ResponseTestWrapper } from "./ResponseTestWapper"
 
