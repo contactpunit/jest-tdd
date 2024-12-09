@@ -1,3 +1,4 @@
+import * as generateId from "../../../app/data/IdGenerator";
 import { Reservation } from "../../../app/model/ReservationModel";
 import { HTTP_CODES, HTTP_METHODS } from "../../../app/model/ServerModel";
 import { Server } from "../../../app/server/Server";
@@ -148,5 +149,36 @@ describe('Integration test for Server GET POST calls', () => {
         expect(result.statusCode).toBe(HTTP_CODES.OK)
         console.log(result.body)
         expect(result.body).toEqual([firstReservation, secondReservation])
+    })
+
+
+    it('should ceate snapshot of the reservation after creation', async() => {
+
+        jest.spyOn(generateId, 'generateRandomId').mockReturnValueOnce('123456')
+
+        await makeAwesomeRequest({
+            host: 'localhost',
+            port: 8080,
+            method: HTTP_METHODS.POST,
+            path: '/reservation',
+            headers: {
+                authorization: reqToken
+            }
+
+        }, firstReservation)
+
+        const result = await makeAwesomeRequest({
+            host: 'localhost',
+            port: 8080,
+            method: HTTP_METHODS.GET,
+            path: '/reservation/123456',
+            headers: {
+                authorization: reqToken
+            }
+
+        }, firstReservation)
+
+        expect(result.body).toMatchSnapshot()
+        expect(result.body).toMatchSnapshot()
     })
 })

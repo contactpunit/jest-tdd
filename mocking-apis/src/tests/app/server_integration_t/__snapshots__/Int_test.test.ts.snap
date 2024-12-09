@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration test for Server GET POST calls should ceate snapshot of the reservation after creation 1`] = `
+{
+  "endDate": "Mon Dec 09 2024",
+  "id": "123456",
+  "room": "123",
+  "startDate": "Mon Dec 09 2024",
+  "user": "punit",
+}
+`;
+
+exports[`Integration test for Server GET POST calls should ceate snapshot of the reservation after creation 2`] = `
+{
+  "endDate": "Mon Dec 09 2024",
+  "id": "123456",
+  "room": "123",
+  "startDate": "Mon Dec 09 2024",
+  "user": "punit",
+}
+`;
